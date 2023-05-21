@@ -16,14 +16,14 @@
           3 - and send it some data
           4 - The last step is to receive some data back and print out the response
 
-1.  [**UDP Client**](./udp_client.py):
+2.  [**UDP Client**](./udp_client.py):
 
         how to build:
           1 - As you can see, we change the socket type to SOCK_DGRAM
           2 - when creating the socket object. The next step is to simply call sendto()
           3 - passing in the data and the server you want to send the data to. Because UDP is a connectionless protocol, there is no call to connect() beforehand. The last step is to call recvfrom() to receive UDP data back.
 
-1.  [**TCP Server**](./tcp_server.py):
+3.  [**TCP Server**](./tcp_server.py):
 
         how to build:
           1 - To start off, we pass in the IP address and port we want the server to listen on
@@ -31,3 +31,8 @@
           3 - and our main server loop is ready to handle another incoming connection. The handle_client function performs the recv() and then sends a simple message back to the client.
           4 - with a maximum backlog of connections set to 5. We then put the server into its main loop, where it is waiting for an incoming connection. When a client connects
           5 - we receive the client socket into the client variable, and the remote connection details into the addr variable. We then create a new thread object that points to our handle_client function, and we pass it the client socket object as an argument. We then start the thread to handle the client connection
+
+4.  [**Netcat Replacement**](./nc_replace.py):
+
+        how to build:
+          - the book, page 13 to page 20
