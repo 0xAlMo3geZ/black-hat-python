@@ -1,4 +1,4 @@
-# Black Hat Python
+# Black Hat Python 2nd Edition
 
 <img align="center" src="https://i.ebayimg.com/images/g/2IEAAOSwHFFjroow/s-l500.jpg" />
 
@@ -35,4 +35,4 @@
 4.  [**Netcat Replacement**](./nc_replace.py):
 
         how to build:
-          - the book, page 13 to page 20
+          - the book, page 32 to page 40
