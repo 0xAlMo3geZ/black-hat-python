@@ -2,9 +2,8 @@ import sys
 import socket
 import threading
 
-HEX_FILTER = ''.join(
-        [(len(repr(chr(i))) == 3 ) and chr(i) or '.' for i in range(256)]
-        )
+HEX_FILTER = "".join([(len(repr(chr(i))) == 3) and chr(i) or "." for i in range(256)])
+
 
 def hexdump(src, length=16, show=True):
     if isinstance(src, bytes):
@@ -12,16 +11,17 @@ def hexdump(src, length=16, show=True):
 
     results = list()
     for i in range(0, len(src), length):
-        word = str(src[i:i+length])
+        word = str(src[i : i + length])
         printable = word.translate(HEX_FILTER)
-        hexa = ' '.join([f'{ord(c):02X}' for c in word])
-        hexwidth =  length*3
-        results.append(f'{i:04x}  {hexa:<{hexwidth}} {printable}')
+        hexa = " ".join([f"{ord(c):02X}" for c in word])
+        hexwidth = length * 3
+        results.append(f"{i:04x}  {hexa:<{hexwidth}} {printable}")
     if show:
         for line in results:
             print(line)
         else:
             return results
+
 
 def receive_from(connection):
     buffer = b""
@@ -37,13 +37,16 @@ def receive_from(connection):
         pass
     return buffer
 
+
 def request_handler(buffer):
     # perform packet modifications
     return buffer
 
+
 def response_handler(buffer):
     # perform packet modifications
     return buffer
+
 
 def proxy_handler(client_socket, remote_host, remote_port, receive_first):
     remote_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -52,7 +55,7 @@ def proxy_handler(client_socket, remote_host, remote_port, receive_first):
     if receive_first:
         remote_buffer = receive_from(remote_socket)
         hexdump(remote_buffer)
-    
+
     remote_buffer = response_handler(remote_buffer)
     if len(remote_buffer):
         print("[<==] Sending %d bytes to localhost." % len(remote_buffer))
@@ -87,12 +90,13 @@ def proxy_handler(client_socket, remote_host, remote_port, receive_first):
             print("[*] No more data. Closing connections.")
             break
 
+
 def server_loop(local_host, local_port, remote_host, remote_port, receive_first):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         server.bind((local_host, local_port))
     except Exception as e:
-        print('problem on bind: %r' % e)
+        print("problem on bind: %r" % e)
         print("[!!] Failed to listen on %s:%d" % (local_host, local_port))
         print("[!!] Check for other listening sockets or correct permissions.")
         sys.exit(0)
@@ -106,13 +110,14 @@ def server_loop(local_host, local_port, remote_host, remote_port, receive_first)
         # start a thread to talk to the remote host
         proxy_thread = threading.Thread(
             target=proxy_handler,
-            args=(client_socket, remote_host,
-            remote_port, receive_first))
+            args=(client_socket, remote_host, remote_port, receive_first),
+        )
         proxy_thread.start()
+
 
 def main():
     if len(sys.argv[1:]) != 5:
-        print("Usage: ./proxy.py [localhost] [localport]", end='')
+        print("Usage: ./proxy.py [localhost] [localport]", end="")
         print("[remotehost] [remoteport] [receive_first]")
         print("Example: ./proxy.py 127.0.0.1 9000 10.12.132.1 9000 True")
         sys.exit(0)
@@ -127,6 +132,6 @@ def main():
         receive_first = False
     server_loop(local_host, local_port, remote_host, remote_port, receive_first)
 
-if __name__ == '__main__':
-    main()
 
+if __name__ == "__main__":
+    main()
