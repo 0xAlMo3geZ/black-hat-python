@@ -6,6 +6,11 @@ PORT = 9999
 
 
 def main():
+    """
+    Creates a socket server, binds it to the IP address and port provided,
+    listens for incoming connections, and handles each connection in a separate
+    thread. No parameters are taken. No return types.
+    """
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     server.bind((IP, PORT))
@@ -24,8 +29,14 @@ def main():
         client_handler.start()
 
 
-# this is our client-handling thread
 def handle_client(client_socket):
+    """
+    Handle a client connection by receiving a message from a socket and sending an acknowledgement message.
+
+    :param client_socket: A socket object representing the client connection.
+    :type client_socket: socket.socket
+    :return: None
+    """
     with client_socket as sock:
         request = sock.recv(1024)
         print(f'[*] Received: {request.decode("utf-8")}')

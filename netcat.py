@@ -8,6 +8,15 @@ import threading
 
 
 def execute(cmd):
+    """
+    Executes a command in a subprocess and returns the output.
+
+    Args:
+        cmd (str): The command to execute.
+
+    Returns:
+        str: The output of the executed command as a string.
+    """
     cmd = cmd.strip()
     if not cmd:
         return
@@ -17,18 +26,42 @@ def execute(cmd):
 
 class NetCat:
     def __init__(self, args, buffer=None):
+        """
+        Initializes a new instance of the class with the specified arguments and buffer.
+
+        :param args: A list of arguments to be passed to the instance.
+        :type args: list
+        :param buffer: An optional buffer to be used by the instance. Defaults to None.
+        :type buffer: Any
+        :return: None
+        """
         self.args = args
         self.buffer = buffer
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     def run(self):
+        """
+        Runs the function based on the user's command line arguments. 
+        
+        Args:
+            self (obj): The current instance of the class.
+            
+        Returns:
+            None
+        """
         if self.args.listen:
             self.listen()
         else:
             self.send()
 
     def send(self):
+        """
+        Connect to a socket and send data to it. Then, receive data from the socket
+        and print the response to the console. After that, wait for user input and send
+        it back to the socket. This function does not take any parameters and does not
+        return anything.
+        """
         self.socket.connect((self.args.target, self.args.port))
         if self.buffer:
             self.socket.send(self.buffer)
@@ -54,6 +87,11 @@ class NetCat:
             sys.exit()
 
     def listen(self):
+        """
+        Listens for incoming client connections, accepts them, and starts a new thread to handle the connection.
+        :param self: The object instance
+        :return: None
+        """
         self.socket.bind((self.args.target, self.args.port))
         self.socket.listen(5)
 
@@ -63,6 +101,13 @@ class NetCat:
             client_thread.start()
 
     def handle(self, client_socket):
+        """
+        Handles client requests based on the provided command line arguments.
+        
+        :param client_socket: A socket object representing the client connection.
+        
+        :return: None.
+        """
         if self.args.execute:
             output = execute(self.args.execute)
             client_socket.send(output.encode())
