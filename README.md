@@ -4,7 +4,7 @@
 
 ## Resources:
 
-- ![The Book](https://www.amazon.com/Black-Hat-Python-Programming-Pentesters/dp/1593275900)
+- [The Book](https://www.amazon.com/Black-Hat-Python-Programming-Pentesters/dp/1593275900)
 
 ## Exercises:
 
